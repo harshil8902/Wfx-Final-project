@@ -1,0 +1,128 @@
+<form [formGroup]="orderDetails" ngNativeValidate  (ngSubmit)="saveData()">
+  <div class="container">
+    <div class=" text-center mt-5 ">
+      <h1>Order Form Sample</h1>
+    </div>
+
+    <div class="row ">
+      <div class="col-lg-10 mx-auto">
+        <div class="card mt-2 mx-auto p-4 bg-light">
+          <div class="card-body bg-light">
+            <div class="container">
+
+              <div class="controls">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label >Order-No *</label>
+                      <input placeholder="Enter the Order Number"  type="number"min="1" max="9999999999" formControlName="order_no" class="form-control" required>
+                    </div>
+                    <span *ngIf="ordernum.invalid &&ordernum.touched">Order no is required !</span>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Delivery Date *</label>
+                      <input  min={{this.date}} max="{{this.maxdate}}" type="date" formControlName="delivery_date" class="form-control"required>
+                    </div>
+                    <span *ngIf="deliverydate.invalid &&deliverydate.touched">Delivery date is required !</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Phone*</label>
+                      <input placeholder="Enter the Phone Number" type="number" min="1000000000" max="9999999999" formControlName="phone_no"  class="form-control"required>
+                    </div>
+                    <span *ngIf="phonenum.invalid &&phonenum.touched">Phone number is required !</span>
+                    <div *ngIf="phonenum.errors?.['minlength']">
+                      Name must be at least 4 characters long.
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group"> <label>Order Type *</label> <select
+                      formControlName="order_type"  class="form-control">
+                        <option value="" selected disabled>--Select Your Type--</option>
+                        <option value="local">Local</option>
+                        <option value="Imported">Imported</option>
+                      </select> </div>
+                      <span *ngIf="ordertype.invalid &&ordertype.touched">Please select order type !</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="form_message">Delivery Address *</label>
+                      <textarea placeholder="Enter Your Delivery Address" formControlName="delivery_address"  class="form-control"
+                        rows="4" required></textarea>
+
+                    </div>
+                    <span *ngIf="deliveryaddress.invalid &&deliveryaddress.touched">Delivery address is required !</span>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Total Value</label>
+                      <input type="number" readonly formControlName="total_value" class="form-control">
+                    </div>
+                  </div>
+                  <input type="hidden" formControlName="status">
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row ">
+      <div class="col-lg-10 mx-auto">
+        <div class="card mt-2 mx-auto p-4 bg-light">
+          <div class="card-body bg-light">
+            <div class="container">
+
+              <div class="controls">
+                <button type="button" (click)="onDelete()" class="btn-right btn btn-primary">Delete</button>
+                <button type="button" (click)="addnewitem()"  class="btn-right btn btn-primary">Add</button>
+
+                <table border="2px" class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Article Name</th>
+                      <th>Price</th>
+                      <th>Quantity</th>
+                      <th>Value</th>
+                    </tr>
+                  </thead>
+                  <tbody formArrayName="orderItem">
+                    <tr *ngFor="let control of orderDetails.controls.orderItem['controls'];let i=index" [formGroupName]="i">
+                      <td>
+                        <input class="form-check-input" (change)="getcheckbocval($event,i)"  type="checkbox">
+                      </td>
+                      <td>
+                        <input class="form-control"(change)="gettotal(i)" maxlength="50" formControlName="article_name" type="text" required>
+                      </td>
+                      <td>
+                        <input class="form-control" min="1" (change)="getprice(i)"formControlName="price"  type="number">
+                      </td>
+                      <td>
+                        <input class="form-control" min="1" (change)="getqantity(i)" formControlName="qty"  type="number">
+                      </td>
+                      <td>{{control.value.value}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="text-center"> 
+                  <button type="submit" (click)="onsubmit()" class="btn-margin mt-3 btn btn-success">Save</button>
+                  <button type="button" (click)="exit()" class="btn-margin mt-3 btn btn-danger">&nbsp;Exit&nbsp; </button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

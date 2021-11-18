@@ -1,0 +1,45 @@
+<div class="btn-container">
+  <button type="button" class="btn btn-primary btn-right" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Cancel
+    </button>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Warning!</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              Are you Sure You want to Cancel?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+            <button type="button" (click)="cancelorder()" class="btn btn-primary"data-bs-dismiss="modal">Yes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <button type="button" routerLink="form" class="btn-right btn btn-primary">New</button>
+  <router-outlet></router-outlet></div>
+<table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th>Status</th>
+        <th>Order-No</th>
+        <th>Delivery-Date</th>
+        <th>Order-Type</th>
+        <th>Total-Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders,let i=index">
+        <td><input type="checkbox" (change)="getcheckval($event,i)"class="form-input-check"></td>
+        <td>{{order.status}}</td>
+        <td><a routerLink="" (click)="update(i)">{{order.order_no}}</a></td>
+        <td>{{order.delivery_date}}</td>
+        <td>{{order.order_type}}</td>
+        <td>{{order.total_value}}</td>
+      </tr>
+    </tbody>
+  </table>
