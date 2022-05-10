@@ -4,6 +4,7 @@ import { OrderFormComponent } from './components/order-form/order-form.component
 import{ OrderListComponent}from './components/order-list/order-list.component';
 const routes: Routes = [
   {path:"",component:OrderListComponent},
+  {path:"cancel",component:OrderListComponent},
   {path:"form",component:OrderFormComponent},
   {path:"form/:edit/:id",component:OrderFormComponent}
  

@@ -9,32 +9,49 @@ import { OrdersService } from '../../services/orders.service';
 export class OrderListComponent implements OnInit {
   constructor(private router:Router, private orderservice:OrdersService) { 
   }
-orders:any=[{"status":"confirmed"}]
-status="confirmed"
+date:any=""
+orders:any=[]
+orderno:any=""
+checked:boolean=false
+id:any=""
 ngOnInit(): void {
+  let date: Date = new Date();
+  this.date = new Date().toISOString().slice(0, 10);
+
     this.orderservice.getData().subscribe((res:any)=>{
       this.orders=res;
     });
+    
 }
 update(i:any){
+  
+  if(this.orders[i].status!="cancelled"){
   let orderno=this.orders[i].order_no;
     this.router.navigate(['form','edit',orderno]);
 }
-checked:boolean=false
-id:any=""
+}
 getcheckval(eve:any,i:any){
-  this.id=i
-  if(eve.target.value){
-    this.checked=true
+  this.id=i;
+  if(eve.target.checked){
+    this.orderno=this.orders[i].order_no;
+    this.checked=true;
   }
-  
-
+  else{
+    this.checked=false;
+  }
 }
 cancelorder(){
-  if(this.checked){
-    this.status="canceled"
-    this.checked=false
-
+  if(this.checked&&this.orders[this.id].delivery_date>this.date){
+    let status="";
+    this.orderservice.cancelorder(status,this.orderno).subscribe(result =>{
+      window.location.reload()
+      alert("order Cancelled Sucessfully");
+      this.checked = false;
+    })
+  }
+  else{
+    alert("order can't be cancelled now");
+    return;
   }
 }
 }

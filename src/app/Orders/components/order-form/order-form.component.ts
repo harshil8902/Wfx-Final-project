@@ -33,19 +33,18 @@ export class OrderFormComponent implements OnInit {
       })
     ]);
     this.orderDetails = new FormGroup({
-      order_no: new FormControl("",Validators.required),
-      delivery_date: new FormControl("",Validators.required),
+      order_no: new FormControl("", Validators.required),
+      delivery_date: new FormControl("", Validators.required),
       order_type: new FormControl(""),
-      delivery_address: new FormControl("",Validators.required),
-      phone_no: new FormControl("",Validators.required),
+      delivery_address: new FormControl("", Validators.required),
+      phone_no: new FormControl("", Validators.required),
       total_value: new FormControl(0),
-      status:new FormControl("Confirmed"),
+      status: new FormControl("Confirmed"),
       "orderItem": new FormArray([
       ])
     })
-    if (this.route.snapshot.params.edit == "edit") {
+    if (this.route.snapshot.params.edit == "edit" ) {
       let id = this.route.snapshot.params.id
-
       this.orderservice.getbyorderno(id).subscribe((data: any) => {
         this.orderDetails.controls.order_no.setValue(data.order_no)
         this.orderDetails.controls["order_no"].disable()
@@ -71,32 +70,35 @@ export class OrderFormComponent implements OnInit {
     }
 
   }
-get ordernum(){
-  return this.orderDetails.get("order_no")
+  get ordernum() {
+    return this.orderDetails.get("order_no");
 
-}
-get ordertype(){
-  return this.orderDetails.get("order_type")
+  }
+  get ordertype() {
+    return this.orderDetails.get("order_type");
 
-}
-get deliverydate(){
-  return this.orderDetails.get("delivery_date")
+  }
+  get deliverydate() {
+    return this.orderDetails.get("delivery_date");
 
-}
-get deliveryaddress(){
-  return this.orderDetails.get("delivery_address")
+  }
+  get deliveryaddress() {
+    return this.orderDetails.get("delivery_address");
 
-}
-get phonenum(){
-  return this.orderDetails.get("phone_no")
+  }
+  get phonenum() {
+    return this.orderDetails.get("phone_no");
 
-}
+  }
   saveData() {
-    if (this.route.snapshot.params.edit != "edit") {
-      
+    if (this.orderDetails.value.orderItem.length == 0) {
+      alert("please add an article");
+    }
+    else if (this.route.snapshot.params.edit != "edit") {
       this.orderservice.saveorders(this.orderDetails.value).subscribe((result: any) => {
         this.router.navigate(['/']);
-        alert(result.message)
+        alert(result.message);
+
       })
 
     }
@@ -104,14 +106,15 @@ get phonenum(){
       let id = this.route.snapshot.params.id;
       this.orderservice.updateDetails(id, this.orderDetails.value).subscribe((res: any) => {
         this.router.navigate(['/']);
-        alert(res.message)
+        alert(res.message);
       })
     }
-}
+  }
 
   get orders(): FormArray {
     return (this.orderDetails.get("orderItem") as FormArray);
   }
+  added: boolean = false
   addnewitem() {
     let orderarr = this.orders;
     let neworder = this.fb.group({
@@ -129,7 +132,7 @@ get phonenum(){
   }
   getqantity(i: any) {
     this.updatevalue()
-    this.totalvalue
+    this.totalvalue;
   }
   gettotal(i: any) {
     this.updatevalue();
@@ -147,11 +150,13 @@ get phonenum(){
     })
     return this.orderDetails.controls.total_value.setValue(total);
   }
-
   getcheckbocval(eve: any, i: number) {
     if (eve.target.checked) {
       this.id = i;
       this.checked = true;
+    }
+    else {
+      this.checked = false;
     }
   }
   onDelete() {
@@ -164,7 +169,7 @@ get phonenum(){
     }
     else {
       if (this.checked) {
-        let orderno = this.orderDetails.value.order_no;
+        let orderno = this.route.snapshot.params.id
         let article = this.orderDetails.value.orderItem[this.id].article_name;
         this.orderservice.deleteArticle(orderno, article).subscribe((data: any) => {
           this.orders.removeAt(this.id);
@@ -177,11 +182,11 @@ get phonenum(){
   exit() {
     this.router.navigate(['/']);
   }
-  onsubmit(){
-    if(this.orderDetails.valid){
+  onsubmit() {
+    if (this.orderDetails.valid) {
       return;
     }
-    else{
+    else {
       alert("Please fill all the mandatory fields*");
     }
 

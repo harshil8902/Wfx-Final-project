@@ -28,4 +28,9 @@ export class OrdersService {
     let endurl="http://192.168.3.122/api/order/"+orderno;
     return this.http.put(endurl,updateddata)
   }
+  cancelorder(status:any,orderno:any){
+    let canurl="http://192.168.3.122/api/order/cancel/"+orderno;
+    return this.http.put(canurl,status)
+
+  }
 }
